@@ -12,8 +12,37 @@ const getCart=async()=>{
 };
  const addToCart=async(item)=>{
     const product=await getCart();
+    const productFound= product.find(p=>p.id===item.id);
+    if(productFound){
+      productFound.qty+=item.qty;
+      console.log("product in cart quantity update");
+      
+    }else
+    {
+      product.push(item);
+      console.log("product added successfully 👍");
+      
+    }
+    
+
     product.push(item);
     await saveCart(product);
+ };
+ const showCart=async()=>{
+   console.log("showcart");
+   
+
+ };
+ const updateCart=async()=>{
+   console.log("updatecart");
+   
+
+ };
+ const deleteFromCart=async()=>{
+  console.log("delete from cart");
+  
+   
+
  };
 const main = async () => {
   const cin = readline.createInterface({
@@ -37,19 +66,41 @@ const main = async () => {
 
     switch (Number(choice)) {
       case 1:
-        await addToCart({id:101,name:"mobile",price:15000,qty:3})
-        console.log("add cart item");
+        // await addToCart({id:101,name:"mobile",price:15000,qty:3})
+        let data =await cin.question("Enter id,name,price,qty:");
+        // console.log(data);
+        let p=data.split(",");
+        // console.table(p);
+        let q=p.map((item)=> item.trim());
+        // console.table(q);
+        let[id,name,price,qty]=q;
+        console.log(id,name,price,qty);
+        const product ={
+          id:Number(id),
+          name,
+          price:Number(price),
+          qty:Number(qty),
+
+        };
+        // console.log(product);
+        await addToCart(product);
+      
+        // console.log("add cart item");
         break;
 
       case 2:
+        showCart();
         console.log("show cart item");
-        break;
 
+        break;
+      
       case 3:
+        deleteFromCart();
         console.log("remove item");
         break;
 
       case 4:
+        updateCart();
         console.log("update quantity");
         break;
 
